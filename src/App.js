@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
 import './App.css';
-import ImgList from './components/ResultsList';
+import ResultsList from './components/ResultsList';
 import SearchForm from './components/SearchForm';
 
 export default class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			results: [],
+			hits: [],
 			loadingState: true
 		};
 	}
@@ -24,7 +23,7 @@ export default class App extends Component {
 				`https://hn.algolia.com/api/v1/search?query=${query}`
 			)
 			.then(data => {
-				this.setState({ results: data.data.results, loadingState: false });
+				this.setState({ hits: data.data.hits, loadingState: false });
 			})
 			.catch(err => {
 				console.log('Error happened during fetching!', err);
@@ -43,7 +42,7 @@ export default class App extends Component {
 				<div className="main-content">
 					{this.state.loadingState
 						? <p>Loading</p>
-						: <ResultsList data={this.state.results} />}
+						: <ResultsList data={this.state.hits} />}
 				</div>
 			</div>
 		);
