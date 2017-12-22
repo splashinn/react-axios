@@ -1,21 +1,51 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import axios from 'axios';
+
 import './App.css';
+import ImgList from './components/ResultsList';
+import SearchForm from './components/SearchForm';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+export default class App extends Component {
+	constructor() {
+		super();
+		this.state = {
+			results: [],
+			loadingState: true
+		};
+	}
+
+	componentDidMount() {
+		this.performSearch();
+	}
+
+	performSearch = (query = 'ruby') => {
+		axios
+			.get(
+				`https://hn.algolia.com/api/v1/search?query=${query}`
+			)
+			.then(data => {
+				this.setState({ results: data.data.results, loadingState: false });
+			})
+			.catch(err => {
+				console.log('Error happened during fetching!', err);
+			});
+	};
+
+	render() {
+		return (
+			<div>
+				<div className="main-header">
+					<div className="inner">
+						<h1 className="main-title">HNSearch</h1>
+						<SearchForm onSearch={this.performSearch} />
+					</div>
+				</div>
+				<div className="main-content">
+					{this.state.loadingState
+						? <p>Loading</p>
+						: <ResultsList data={this.state.results} />}
+				</div>
+			</div>
+		);
+	}
 }
-
-export default App;
