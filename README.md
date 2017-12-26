@@ -1,6 +1,12 @@
 # react-axios
 
-* example application using react and axios to search/fetch from hacker news api 
+* example application using react and axios to search/fetch from hacker news api
+
+## Quick Start
+
+* clone this repo
+* `yarn install` for dependencies
+* `yarn start` to fire up dev server
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
